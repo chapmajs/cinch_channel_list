@@ -20,17 +20,17 @@ class ChannelList
   end
 
   def clear_channels(message)
-    synchronize('clear_channels') { @channels = {} }
+    synchronize(:channel_list) { @channels = {} }
   end
 
   def add_channel(message)
-    synchronize('add_channel') do
+    synchronize(:channel_list) do
         channels[message.params[1]] = { :user_count => message.params[2], :topic => message.params[3].sub(/\[.*\] /, '') } 
     end
   end
 
   def send_channel_list(message)
-    @bot.handlers.dispatch(:channel_list_received, nil, @channels)
+    synchronize(:channel_list) { @bot.handlers.dispatch(:channel_list_received, nil, @channels) }
   end
 end
 
