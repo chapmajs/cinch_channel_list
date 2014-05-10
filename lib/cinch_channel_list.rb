@@ -10,6 +10,11 @@ class ChannelList
   listen_to Cinch::Constants::RPL_LIST,       :method => :add_channel
   listen_to Cinch::Constants::RPL_LISTEND,    :method => :send_channel_list
 
+  def initialize(bot)
+    @channels = {}
+    super(bot)
+  end
+
   def send_list(message)
     bot.irc.send "LIST"
   end
