@@ -3,7 +3,7 @@ require 'cinch'
 class ChannelList
   include Cinch::Plugin
 
-  attr_accessor :channels
+  attr_accessor :channels, :listing
 
   listen_to :get_channel_list,                :method => :send_list
   listen_to Cinch::Constants::RPL_LISTSTART,  :method => :clear_channels
@@ -12,6 +12,7 @@ class ChannelList
 
   def initialize(bot)
     @channels = {}
+    @listing = false
     super(bot)
   end
 
@@ -20,7 +21,11 @@ class ChannelList
   end
 
   def clear_channels(message)
-    synchronize(:channel_list) { @channels = {} }
+    unless listing
+      synchronize(:channel_list) { @channels = {} }
+    end
+
+    listing = true
   end
 
   def add_channel(message)
@@ -30,6 +35,7 @@ class ChannelList
   end
 
   def send_channel_list(message)
+    listing = false
     synchronize(:channel_list) { @bot.handlers.dispatch(:channel_list_received, nil, @channels) }
   end
 end

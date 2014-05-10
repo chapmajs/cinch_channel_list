@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cinch_channel_list'
-  s.version     = '0.0.4'
+  s.version     = '0.0.5'
   s.date        = '2014-05-09'
   s.summary     = 'Cinch Channel List'
   s.description = 'A Cinch IRC plugin for getting channel lists'
